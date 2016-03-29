@@ -1,0 +1,16 @@
+<head>
+  <base href="/">
+  <title>Todo List</title>
+  <login-buttons></login-buttons>
+</head>
+
+<body>
+
+<div ng-app="simple-todos" ng-strict-di="">
+  <h1 ng-if="$root.currentUser._id">
+    <a href="/home">Home</a>
+  </h1>
+
+  <div ui-view=""></div>
+</div>
+</body>

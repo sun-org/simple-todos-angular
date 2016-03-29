@@ -1,0 +1,30 @@
+<div >
+  <select ng-model="selectedSite">
+    <option value="" default selected>select site</option>
+    <option ng-repeat="site in sites">{{site.name}}</option>
+  </select>
+</div>
+<br/><br/>
+<div>
+  <select>
+    <option value="" default selected>select material</option>
+    <option ng-repeat="material in materials">{{material}}</option>
+  </select>
+</div>
+<br/><br/>
+<div>
+  <select>
+    <option value="" default selected>select type</option>
+    <option ng-repeat="type in types">{{type}}</option>
+  </select>
+</div>
+<br/><br/>
+<div>
+<label>Current Quantity : {{quantity}}</label>
+</div>
+<br/><br/>
+<div>
+<input ng-model="quantity1" type="number" placeholder="select quantity" min="0" step="1"/>
+</div>
+<br/><br/><br/>
+<button  ng-click="addQuantity(selectedSite,quantity1)">Add</button>
