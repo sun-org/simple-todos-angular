@@ -1,6 +1,8 @@
 Tasks = new Mongo.Collection('tasks');
 Sites = new Mongo.Collection('sites');
-
+Materials = new Mongo.Collection('materials');
+Collection_Types = new Mongo.Collection('types');
+Collection_Items = new Mongo.Collection('items');
 
 if (Meteor.isClient) {
 
@@ -71,6 +73,7 @@ if (Meteor.isClient) {
       controller: function ($scope, $reactive,$meteor) {
 
         $scope.resetDatabase = function(){
+          console.log("calling meteor call");
           $meteor.call('resetDatabase');
 
         }
@@ -151,18 +154,28 @@ if (Meteor.isClient) {
       templateUrl: 'addTask.html',
       controllerAs: 'addTaskCtrl',
       controller: function ($scope, $reactive, $meteor) {
-//        $scope.sites = ["site1", "site2"];
-        $scope.materials = ["cement", "steel"];
-        $scope.types = ["L shape", "cylinder", "rod"];
         $scope.quantity = 10;
 
-        $scope.sites = Sites.find();
+        Tracker.autorun(function(){
+           Meteor.subscribe("sites", function(){
+              $scope.sites = Sites.find().fetch();
+              console.log($scope.sites);
+           });
+           Meteor.subscribe("materials", function(){
+              $scope.materials = Materials.find().fetch();
+              console.log($scope.materials);
+           });
+           Meteor.subscribe("types", function(){
+              $scope.types = Collection_Types.find().fetch();
+              console.log($scope.types);
+           });
+        });
 
-        $scope.addQuantity = function (selectedSite,quantity) {
+        $scope.addQuantity = function (selectedSite, selectedMaterial, selectedType, quantity) {
           alert(selectedSite);
           alert(quantity);
-          $meteor.call('addQuantity',quantity);
-          $scope.newTask=''; $scope.quantity='';
+          $meteor.call('addQuantity', selectedSite, selectedMaterial, selectedType, quantity);
+          $scope.quantity='';
         };
       }
     }
@@ -198,13 +211,23 @@ if(Meteor.isServer){
 
   //METEOR methods
     Meteor.methods({
-      addQuantity: function (quantity) {
+      addQuantity: function (site, material, type, quantity) {
         // Make sure the user is logged in before inserting a task
         if (! Meteor.userId()) {
           throw new Meteor.Error('not-authorized');
         }
 
-        alert(quantity);
+        console.log(site, material, type, quantity);
+
+        Collection_Items.insert({
+          site: site,
+          material: material,
+          type: type,
+          quantity: quantity,
+          createdAt: new Date(),
+          owner: Meteor.userId(),
+          username: Meteor.user().username
+        });
       },
       addTask: function (text, quantity) {
         // Make sure the user is logged in before inserting a task
@@ -249,17 +272,28 @@ if(Meteor.isServer){
         Tasks.update(taskId, { $set: { private: setToPrivate } });
       },
 
-
       resetDatabase: function () {
+        console.log("inside meteor");
         if (! Meteor.userId()) {
           throw new Meteor.Error('not-authorized');
         }
 
+        console.log("calling remove");
        Sites.remove({});
+       Materials.remove({});
+       Collection_Types.remove({});
+       Collection_Items.remove({});
+       console.log("calling insert");
        Sites.insert({name: "site1", description:"desc1", createdAt: new Date(), owner: Meteor.userId(), username: Meteor.user().username});
        Sites.insert({name: "site2", description:"desc2", createdAt: new Date(), owner: Meteor.userId(), username: Meteor.user().username});
        Sites.insert({name: "site3", description:"desc3", createdAt: new Date(), owner: Meteor.userId(), username: Meteor.user().username});
        Sites.insert({name: "site4", description:"desc4", createdAt: new Date(), owner: Meteor.userId(), username: Meteor.user().username});
+
+       Materials.insert({name: "Steel", description:"Steel", createdAt: new Date(), owner: Meteor.userId(), username: Meteor.user().username});
+       Materials.insert({name: "Cement", description:"Steel", createdAt: new Date(), owner: Meteor.userId(), username: Meteor.user().username});
+
+       Collection_Types.insert({name: "90 deg. Angle", description:"Bent at 90 degrees", createdAt: new Date(), owner: Meteor.userId(), username: Meteor.user().username});
+       Collection_Types.insert({name: "Rectangle", description:"Rectangle", createdAt: new Date(), owner: Meteor.userId(), username: Meteor.user().username});
       },
 
 

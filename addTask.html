@@ -4,27 +4,27 @@
     <option ng-repeat="site in sites">{{site.name}}</option>
   </select>
 </div>
-<br/><br/>
+<br/>
 <div>
-  <select>
+  <select ng-model="selectedMaterial">
     <option value="" default selected>select material</option>
-    <option ng-repeat="material in materials">{{material}}</option>
+    <option ng-repeat="material in materials">{{material.name}}</option>
   </select>
 </div>
-<br/><br/>
+<br/>
 <div>
-  <select>
+  <select ng-model="selectedType">
     <option value="" default selected>select type</option>
-    <option ng-repeat="type in types">{{type}}</option>
+    <option ng-repeat="type in types">{{type.name}}</option>
   </select>
 </div>
-<br/><br/>
+<br/>
 <div>
 <label>Current Quantity : {{quantity}}</label>
 </div>
-<br/><br/>
+<br/>
 <div>
-<input ng-model="quantity1" type="number" placeholder="select quantity" min="0" step="1"/>
+<input ng-model="selectedQuantity" type="number" placeholder="select quantity" min="0" step="1"/>
 </div>
-<br/><br/><br/>
-<button  ng-click="addQuantity(selectedSite,quantity1)">Add</button>
+<br/><br/>
+<button  ng-click="addQuantity(selectedSite, selectedMaterial, selectedType, selectedQuantity)">Add</button>
