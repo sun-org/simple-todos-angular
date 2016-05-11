@@ -13,4 +13,5 @@ else
 angular.element(document).ready(onReady);
 
 // This code only runs on the client
-angular.module('simple-todos',['angular-meteor', 'ui.router', 'accounts.ui']);
+angular.module('simple-todos',['angular-meteor', 'ui.router', 'accounts.ui',
+  'angularUtils.directives.dirPagination']);

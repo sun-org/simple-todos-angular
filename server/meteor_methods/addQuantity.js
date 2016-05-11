@@ -8,7 +8,7 @@ Meteor.methods({
 
     console.log(site, material, type, quantity);
 
-    Collection_Items.insert({
+    var itemId = Collection_Items.insert({
       site: site,
       material: material,
       type: type,
@@ -17,5 +17,8 @@ Meteor.methods({
       owner: Meteor.userId(),
       username: Meteor.user().username
     });
+
+    console.log("Item Id : "+itemId);
+
   }
 });

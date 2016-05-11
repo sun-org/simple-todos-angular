@@ -1,10 +1,12 @@
-Meteor.publish('tasks', function () {
-  return Tasks.find({
+Meteor.publish('tasks', function (options) {
+  let selector = {
     $or: [
       { private: {$ne: true} },
       { owner: this.userId }
     ]
-  });
+  };
+  Counts.publish(this, 'numberOfParties', Tasks.find(selector), {noReady: true});
+  return Tasks.find(selector, options);
 });
 
 Meteor.publish('sites', function () {

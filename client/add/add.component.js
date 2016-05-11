@@ -12,6 +12,7 @@ angular.module('simple-todos').directive('addTask', function () {
           $scope.sites = Sites.find().fetch();
           console.log($scope.sites);
         });
+
         Meteor.subscribe("materials", function(){
           $scope.materials = Materials.find().fetch();
           console.log($scope.materials);

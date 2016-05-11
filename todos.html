@@ -21,8 +21,17 @@
 
   </header>
 
+  <h1>Parties:</h1>
+  <div>
+    <select ng-model="todoListCtrl.orderProperty" ng-change="todoListCtrl.updateSort()">
+      <option value="1">Ascending</option>
+      <option value="-1">Descending</option>
+    </select>
+  </div>
+
   <ul>
-    <li ng-repeat="task in tasks"
+    <li
+     dir-paginate="task in tasks | itemsPerPage: todoListCtrl.perPage" total-items="todoListCtrl.partiesCount"
         ng-class="{'checked': task.checked, 'private': task.private}">
       <button class="delete" ng-click="deleteTask(task)">&times;</button>
       <input type="checkbox" ng-checked="task.checked"
@@ -43,5 +52,6 @@
 
     </li>
   </ul>
+  <dir-pagination-controls on-page-change="todoListCtrl.pageChanged(newPageNumber)"></dir-pagination-controls>
 
 </div>

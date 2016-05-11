@@ -18,3 +18,5 @@ angular
 accounts-password
 dotansimha:accounts-ui-angular
 angularui:angular-ui-router
+angularutils:pagination
+tmeasday:publish-counts
